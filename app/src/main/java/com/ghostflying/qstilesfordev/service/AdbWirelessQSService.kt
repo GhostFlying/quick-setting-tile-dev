@@ -1,21 +1,15 @@
 package com.ghostflying.qstilesfordev.service
 
-import android.Manifest
 import android.content.Context
-import android.content.DialogInterface
-import android.content.pm.PackageManager
-import android.service.quicksettings.TileService
+import android.net.wifi.WifiManager
+import android.service.quicksettings.Tile
 import com.ghostflying.qstilesfordev.R
 import com.ghostflying.qstilesfordev.util.CommandUtil
 import com.ghostflying.qstilesfordev.util.Logger
-import android.net.wifi.WifiManager
-import android.provider.Settings
-import android.service.quicksettings.Tile
-import android.widget.Toast
 import com.ghostflying.qstilesfordev.util.SecureSettingUtil
 
 
-class AdbWirelessQSService : TileService() {
+class AdbWirelessQSService : BaseQSService() {
 
     companion object {
         private val TAG  = "AdbWirelessQSService"
@@ -36,24 +30,20 @@ class AdbWirelessQSService : TileService() {
 
     private var mCurrentState = -1
 
+    override fun getTAG(): String {
+        return TAG
+    }
+
     override fun onTileAdded() {
         super.onTileAdded()
-
-        Logger.d(TAG, "onTileAdded")
-
-        Toast.makeText(this, R.string.adb_tile_alert_message, Toast.LENGTH_LONG).show()
     }
 
     override fun onTileRemoved() {
         super.onTileRemoved()
-
-        Logger.d(TAG, "onTileRemoved");
     }
 
     override fun onStartListening() {
         super.onStartListening()
-
-        Logger.d(TAG, "onStartListening")
 
         checkCurrentState()
 
@@ -61,14 +51,10 @@ class AdbWirelessQSService : TileService() {
 
     override fun onStopListening() {
         super.onStopListening()
-
-        Logger.d(TAG, "onStopListening")
     }
 
     override fun onClick() {
         super.onClick()
-
-        Logger.d(TAG, "onClick")
 
         if (mCurrentState < 0) {
             Logger.d(TAG, "tile is not prepared")
