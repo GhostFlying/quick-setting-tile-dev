@@ -3,6 +3,7 @@ package com.ghostflying.qstilesfordev.service
 import android.content.Context
 import android.net.wifi.WifiManager
 import android.service.quicksettings.Tile
+import android.widget.Toast
 import com.ghostflying.qstilesfordev.R
 import com.ghostflying.qstilesfordev.util.CommandUtil
 import com.ghostflying.qstilesfordev.util.Logger
@@ -36,6 +37,8 @@ class AdbWirelessQSService : BaseQSService() {
 
     override fun onTileAdded() {
         super.onTileAdded()
+
+        Toast.makeText(this, R.string.adb_tile_alert_message, Toast.LENGTH_LONG).show()
     }
 
     override fun onTileRemoved() {

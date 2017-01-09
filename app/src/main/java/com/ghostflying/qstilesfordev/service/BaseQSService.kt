@@ -1,8 +1,6 @@
 package com.ghostflying.qstilesfordev.service
 
 import android.service.quicksettings.TileService
-import android.widget.Toast
-import com.ghostflying.qstilesfordev.R
 import com.ghostflying.qstilesfordev.util.Logger
 
 /**
@@ -10,11 +8,14 @@ import com.ghostflying.qstilesfordev.util.Logger
  */
 abstract class BaseQSService : TileService() {
 
+    companion object {
+        val TAG = "BaseQSService"
+    }
+
     override fun onTileAdded() {
         super.onTileAdded()
 
         Logger.d(getTAG(), "onTileAdded")
-        Toast.makeText(this, R.string.adb_tile_alert_message, Toast.LENGTH_LONG).show()
     }
 
     override fun onTileRemoved() {
@@ -41,5 +42,21 @@ abstract class BaseQSService : TileService() {
         Logger.d(getTAG(), "onClick")
     }
 
-    abstract fun getTAG() : String
+    fun collapseStatusBar() {
+        // try to collapse status bar by reflection
+
+        Logger.d(getTAG(), "try to collapse status bar")
+        try {
+            val statusManager = this.getSystemService("statusbar");
+            val collapse = statusManager.javaClass.getMethod("collapsePanels")
+            collapse.invoke(statusManager)
+        }
+        catch (e : Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    open fun getTAG() : String {
+        return TAG
+    }
 }

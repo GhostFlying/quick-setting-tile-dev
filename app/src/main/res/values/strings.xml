@@ -8,4 +8,9 @@
     <string name="adb_tile_title_enabled">Adb on: %1$s:%2$s</string>
     <string name="adb_tile_title_usb">Adb over usb</string>
     <string name="adb_tile_title_disabled">Adb disabled</string>
+
+    <string name="screen_time_out_click_to_start">Click to start</string>
+    <string name="screen_time_out_alert_message">Please grant me permission to modify system setting and it is needed to change screen time out time.</string>
+    <string name="screen_time_out_alert_confirm">Confirm</string>
+    <string name="screen_time_out_label">After %1$d min</string>
 </resources>
