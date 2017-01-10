@@ -4,7 +4,6 @@ import android.content.ContentResolver
 import android.content.Context
 import android.provider.Settings
 import com.ghostflying.qstilesfordev.R
-import com.ghostflying.qstilesfordev.act.AlertActivity
 
 /**
  * Created by ghostflying on 2017/1/9.
@@ -15,6 +14,8 @@ class SystemSettingUtil {
         val TAG = "SystemSettingUtil"
 
         val instance : SystemSettingUtil by lazy { SystemSettingUtil() }
+
+        val ACTION_GRANT_PERMISSION = Settings.ACTION_MANAGE_WRITE_SETTINGS
     }
 
     private constructor() {
@@ -23,10 +24,6 @@ class SystemSettingUtil {
 
     fun checkWriteSystemPermission(context : Context) : Boolean {
         return Settings.System.canWrite(context)
-    }
-
-    fun promptUserToGrant(context: Context) {
-        AlertActivity.startActivity(context, R.string.screen_time_out_alert_message, Settings.ACTION_MANAGE_WRITE_SETTINGS)
     }
 
     fun getIntSystemSetting(cr: ContentResolver, key: String) : Int {

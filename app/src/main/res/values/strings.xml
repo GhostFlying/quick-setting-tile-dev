@@ -2,15 +2,18 @@
     <string name="app_name">QSTilesForDev</string>
 
     <string name="checking">Checking</string>
+    <string name="click_to_start">Click to start</string>
+    <string name="confirm">Confirm</string>
 
     <string name="adb_tile_alert_message">This tile need root permission to work, non-root version is to-do.</string>
-    <string name="adb_tile_title_checking">@string/checking</string>
+    <string name="adb_tile_title_click_to_start">@string/click_to_start</string>
     <string name="adb_tile_title_enabled">Adb on: %1$s:%2$s</string>
     <string name="adb_tile_title_usb">Adb over usb</string>
     <string name="adb_tile_title_disabled">Adb disabled</string>
+    <string name="adb_tile_alert_confirm">@string/confirm</string>
 
-    <string name="screen_time_out_click_to_start">Click to start</string>
+    <string name="screen_time_out_click_to_start">@string/click_to_start</string>
     <string name="screen_time_out_alert_message">Please grant me permission to modify system setting and it is needed to change screen time out time.</string>
-    <string name="screen_time_out_alert_confirm">Confirm</string>
+    <string name="screen_time_out_alert_confirm">@string/confirm</string>
     <string name="screen_time_out_label">After %1$d min</string>
 </resources>

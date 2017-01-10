@@ -1,13 +1,17 @@
 package com.ghostflying.qstilesfordev.service
 
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.net.wifi.WifiManager
 import android.service.quicksettings.Tile
 import android.widget.Toast
 import com.ghostflying.qstilesfordev.R
 import com.ghostflying.qstilesfordev.util.CommandUtil
+import com.ghostflying.qstilesfordev.util.DialogUtil
 import com.ghostflying.qstilesfordev.util.Logger
 import com.ghostflying.qstilesfordev.util.SecureSettingUtil
+import kotlinx.android.synthetic.main.activity_alert.*
 
 
 class AdbWirelessQSService : BaseQSService() {
@@ -15,6 +19,7 @@ class AdbWirelessQSService : BaseQSService() {
     companion object {
         private val TAG  = "AdbWirelessQSService"
 
+        private val STATE_NO_PERMISSION = -1
         private val STATE_DISABLED = 0
         private val STATE_USB = 1
         private val STATE_WIRELESS = 2
@@ -29,7 +34,7 @@ class AdbWirelessQSService : BaseQSService() {
         private val COMMAND_RESTART_ADB = "stop adbd\nstart adbd\n"
     }
 
-    private var mCurrentState = -1
+    private var mCurrentState = STATE_NO_PERMISSION
 
     override fun getTAG(): String {
         return TAG
@@ -38,7 +43,7 @@ class AdbWirelessQSService : BaseQSService() {
     override fun onTileAdded() {
         super.onTileAdded()
 
-        Toast.makeText(this, R.string.adb_tile_alert_message, Toast.LENGTH_LONG).show()
+
     }
 
     override fun onTileRemoved() {
@@ -59,12 +64,25 @@ class AdbWirelessQSService : BaseQSService() {
     override fun onClick() {
         super.onClick()
 
-        if (mCurrentState < 0) {
+        if (mCurrentState < -1) {
             Logger.d(TAG, "tile is not prepared")
             return
         }
 
-        if (mCurrentState == STATE_DISABLED) {
+        if (mCurrentState == STATE_NO_PERMISSION) {
+            val dialog = DialogUtil.instance.getAlertDialog(
+                    this,
+                    R.string.adb_tile_alert_message,
+                    R.string.adb_tile_alert_confirm,
+                    DialogInterface.OnClickListener {
+                        dialog,
+                        which -> SecureSettingUtil.instance.
+                            grantPermissionIfNeeded(this@AdbWirelessQSService)
+                    }
+            )
+            showDialog(dialog)
+        }
+        else if (mCurrentState == STATE_DISABLED) {
             CommandUtil.instance.setProp(PROP_ADB_TCP_PORT, PROP_ADB_TCP_PORT_DISABLED)
             SecureSettingUtil.instance.grantPermissionIfNeeded(this)
             SecureSettingUtil.instance.enableUsbDebug(contentResolver)
@@ -86,6 +104,15 @@ class AdbWirelessQSService : BaseQSService() {
     private fun checkCurrentState() {
         Logger.d(TAG, "start chcecking")
 
+        if (!SecureSettingUtil.instance.checkPermissionIsGranted(this)) {
+            Logger.d(TAG, "need grant permission")
+            qsTile.label = getString(R.string.adb_tile_title_click_to_start)
+            qsTile.state = Tile.STATE_INACTIVE
+            qsTile.updateTile()
+            mCurrentState = STATE_NO_PERMISSION
+            return
+        }
+
         val adbState = CommandUtil.instance.getProp(PROP_ADB_IS_RUNNING)
         Logger.d(TAG, "current adb state is " + adbState)
 
@@ -94,25 +121,19 @@ class AdbWirelessQSService : BaseQSService() {
             return
         }
 
-
         val portCurrent = CommandUtil.instance.getProp(PROP_ADB_TCP_PORT)
         Logger.d(TAG, "current adb tcp port is " + portCurrent)
 
-        if (portCurrent.isBlank()) {
-            Logger.d(TAG, "check adb wireless current stat fail")
-            return
-        }
-
-        if (portCurrent == PROP_ADB_TCP_PORT_DISABLED) {
+        if (portCurrent == PROP_ADB_TCP_PORT_DISABLED || portCurrent.isBlank()) {
             markAdbUsb()
         } else {
             markAdbWireless(portCurrent)
         }
     }
 
-    private fun markChecking() {
-        qsTile.label = getString(R.string.adb_tile_title_checking)
-        qsTile.state = Tile.STATE_UNAVAILABLE
+    private fun markClickToStart() {
+        qsTile.label = getString(R.string.adb_tile_title_click_to_start)
+        qsTile.state = Tile.STATE_INACTIVE
         qsTile.updateTile()
     }
 

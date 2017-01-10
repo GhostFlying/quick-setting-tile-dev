@@ -42,20 +42,6 @@ abstract class BaseQSService : TileService() {
         Logger.d(getTAG(), "onClick")
     }
 
-    fun collapseStatusBar() {
-        // try to collapse status bar by reflection
-
-        Logger.d(getTAG(), "try to collapse status bar")
-        try {
-            val statusManager = this.getSystemService("statusbar");
-            val collapse = statusManager.javaClass.getMethod("collapsePanels")
-            collapse.invoke(statusManager)
-        }
-        catch (e : Exception) {
-            e.printStackTrace()
-        }
-    }
-
     open fun getTAG() : String {
         return TAG
     }

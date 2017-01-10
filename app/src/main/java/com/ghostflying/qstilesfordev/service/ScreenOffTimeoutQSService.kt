@@ -1,7 +1,11 @@
 package com.ghostflying.qstilesfordev.service
 
+import android.content.DialogInterface
+import android.content.Intent
 import android.provider.Settings
+import android.service.quicksettings.Tile
 import com.ghostflying.qstilesfordev.R
+import com.ghostflying.qstilesfordev.util.DialogUtil
 import com.ghostflying.qstilesfordev.util.Logger
 import com.ghostflying.qstilesfordev.util.SystemSettingUtil
 
@@ -31,6 +35,7 @@ class ScreenOffTimeoutQSService : BaseQSService(){
 
         if (!SystemSettingUtil.instance.checkWriteSystemPermission(this)) {
             qsTile.label = getString(R.string.screen_time_out_click_to_start)
+            qsTile.state = Tile.STATE_INACTIVE
             qsTile.updateTile()
             return
         }
@@ -52,6 +57,7 @@ class ScreenOffTimeoutQSService : BaseQSService(){
 
         val timeoutInMin = timeoutMilliseconds / 1000 / 60
         qsTile.label = getString(R.string.screen_time_out_label).format(timeoutInMin)
+        qsTile.state = Tile.STATE_ACTIVE
         qsTile.updateTile()
 
         mCurrentIdx = findCurrentIdx(timeoutInMin)
@@ -62,9 +68,22 @@ class ScreenOffTimeoutQSService : BaseQSService(){
 
         if (!SystemSettingUtil.instance.checkWriteSystemPermission(this)) {
 
-            collapseStatusBar()
+            Logger.d(TAG, "notify user to grant permission")
 
-            SystemSettingUtil.instance.promptUserToGrant(this)
+            val dialog = DialogUtil.instance.getAlertDialog(
+                    this,
+                    R.string.screen_time_out_alert_message,
+                    R.string.screen_time_out_alert_confirm,
+                    object : DialogInterface.OnClickListener {
+                        override fun onClick(dialog: DialogInterface?, which: Int) {
+                            val intent = Intent(SystemSettingUtil.ACTION_GRANT_PERMISSION)
+                            startActivityAndCollapse(intent)
+                        }
+
+                    }
+            )
+
+            showDialog(dialog)
 
             return
         }

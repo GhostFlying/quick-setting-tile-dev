@@ -27,6 +27,11 @@ class SecureSettingUtil {
         Logger.d(TAG, "new SecureSettingUtil")
     }
 
+    fun checkPermissionIsGranted(context: Context) : Boolean {
+        return context.checkSelfPermission(Manifest.permission.WRITE_SECURE_SETTINGS) ==
+                PackageManager.PERMISSION_GRANTED
+    }
+
     fun grantPermissionIfNeeded(context : Context) {
         if (context.checkSelfPermission(Manifest.permission.WRITE_SECURE_SETTINGS)
                 != PackageManager.PERMISSION_GRANTED) {

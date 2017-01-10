@@ -17,7 +17,7 @@
         <service
             android:name=".service.AdbWirelessQSService"
             android:icon="@drawable/ic_adb_white_24dp"
-            android:label="@string/adb_tile_title_checking"
+            android:label="@string/adb_tile_title_click_to_start"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
@@ -32,10 +32,6 @@
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
             </intent-filter>
         </service>
-
-        <activity
-            android:name=".act.AlertActivity"
-            android:theme="@style/AppTheme.DialogActTheme"/>
     </application>
 
 </manifest>
