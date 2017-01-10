@@ -71,7 +71,9 @@ class AdbWirelessQSService : BaseQSService() {
                     R.string.adb_tile_alert_confirm,
                     DialogInterface.OnClickListener {
                         dialog,
-                        which -> SecureSettingUtil.instance.
+                        which ->
+                        dialog.dismiss()
+                        SecureSettingUtil.instance.
                             grantPermissionIfNeeded(this@AdbWirelessQSService)
                     }
             )
@@ -97,14 +99,11 @@ class AdbWirelessQSService : BaseQSService() {
     }
 
     private fun checkCurrentState() {
-        Logger.d(TAG, "start chcecking")
+        Logger.d(TAG, "start checking")
 
         if (!SecureSettingUtil.instance.checkPermissionIsGranted(this)) {
             Logger.d(TAG, "need grant permission")
-            qsTile.label = getString(R.string.adb_tile_label_click_to_start)
-            qsTile.state = Tile.STATE_INACTIVE
-            qsTile.updateTile()
-            mCurrentState = STATE_NO_PERMISSION
+            markClickToStart()
             return
         }
 
@@ -130,6 +129,7 @@ class AdbWirelessQSService : BaseQSService() {
         qsTile.label = getString(R.string.adb_tile_label_click_to_start)
         qsTile.state = Tile.STATE_INACTIVE
         qsTile.updateTile()
+        mCurrentState = STATE_NO_PERMISSION
     }
 
     private fun markAdbWireless(portCurrent: String) {

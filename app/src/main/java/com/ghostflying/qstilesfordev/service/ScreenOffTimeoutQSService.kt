@@ -78,12 +78,9 @@ class ScreenOffTimeoutQSService : BaseQSService(){
                     this,
                     R.string.screen_time_out_alert_message,
                     R.string.screen_time_out_alert_confirm,
-                    object : DialogInterface.OnClickListener {
-                        override fun onClick(dialog: DialogInterface?, which: Int) {
-                            val intent = Intent(SystemSettingUtil.ACTION_GRANT_PERMISSION)
-                            startActivityAndCollapse(intent)
-                        }
-
+                    DialogInterface.OnClickListener { dialog, which ->
+                        val intent = Intent(SystemSettingUtil.ACTION_GRANT_PERMISSION)
+                        startActivityAndCollapse(intent)
                     }
             )
 
