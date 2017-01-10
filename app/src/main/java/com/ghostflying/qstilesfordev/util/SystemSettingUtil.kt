@@ -3,7 +3,6 @@ package com.ghostflying.qstilesfordev.util
 import android.content.ContentResolver
 import android.content.Context
 import android.provider.Settings
-import com.ghostflying.qstilesfordev.R
 
 /**
  * Created by ghostflying on 2017/1/9.

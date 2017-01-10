@@ -17,7 +17,7 @@
         <service
             android:name=".service.AdbWirelessQSService"
             android:icon="@drawable/ic_adb_white_24dp"
-            android:label="@string/adb_tile_title_click_to_start"
+            android:label="@string/adb_tile_label_before_added"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
@@ -26,7 +26,7 @@
         <service
             android:name=".service.ScreenOffTimeoutQSService"
             android:icon="@drawable/ic_timelapse_black_24dp"
-            android:label="@string/screen_time_out_click_to_start"
+            android:label="@string/screen_time_out_label_before_added"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE" />

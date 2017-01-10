@@ -1,17 +1,14 @@
 package com.ghostflying.qstilesfordev.service
 
-import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.net.wifi.WifiManager
 import android.service.quicksettings.Tile
-import android.widget.Toast
 import com.ghostflying.qstilesfordev.R
 import com.ghostflying.qstilesfordev.util.CommandUtil
 import com.ghostflying.qstilesfordev.util.DialogUtil
 import com.ghostflying.qstilesfordev.util.Logger
 import com.ghostflying.qstilesfordev.util.SecureSettingUtil
-import kotlinx.android.synthetic.main.activity_alert.*
 
 
 class AdbWirelessQSService : BaseQSService() {
@@ -42,8 +39,6 @@ class AdbWirelessQSService : BaseQSService() {
 
     override fun onTileAdded() {
         super.onTileAdded()
-
-
     }
 
     override fun onTileRemoved() {
@@ -106,7 +101,7 @@ class AdbWirelessQSService : BaseQSService() {
 
         if (!SecureSettingUtil.instance.checkPermissionIsGranted(this)) {
             Logger.d(TAG, "need grant permission")
-            qsTile.label = getString(R.string.adb_tile_title_click_to_start)
+            qsTile.label = getString(R.string.adb_tile_label_click_to_start)
             qsTile.state = Tile.STATE_INACTIVE
             qsTile.updateTile()
             mCurrentState = STATE_NO_PERMISSION
@@ -132,27 +127,27 @@ class AdbWirelessQSService : BaseQSService() {
     }
 
     private fun markClickToStart() {
-        qsTile.label = getString(R.string.adb_tile_title_click_to_start)
+        qsTile.label = getString(R.string.adb_tile_label_click_to_start)
         qsTile.state = Tile.STATE_INACTIVE
         qsTile.updateTile()
     }
 
     private fun markAdbWireless(portCurrent: String) {
-        qsTile.label = getString(R.string.adb_tile_title_enabled).format(getIpAddr(), portCurrent)
+        qsTile.label = getString(R.string.adb_tile_label_enabled).format(getIpAddr(), portCurrent)
         qsTile.state = Tile.STATE_ACTIVE
         qsTile.updateTile()
         mCurrentState = STATE_WIRELESS
     }
 
     private fun markAdbUsb() {
-        qsTile.label = getString(R.string.adb_tile_title_usb)
+        qsTile.label = getString(R.string.adb_tile_label_usb)
         qsTile.state = Tile.STATE_ACTIVE
         qsTile.updateTile()
         mCurrentState = STATE_USB
     }
 
     private fun markAdbDisabled() {
-        qsTile.label = getString(R.string.adb_tile_title_disabled)
+        qsTile.label = getString(R.string.adb_tile_label_disabled)
         qsTile.state = Tile.STATE_INACTIVE
         qsTile.updateTile()
         mCurrentState = STATE_DISABLED

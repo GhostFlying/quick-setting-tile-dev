@@ -30,6 +30,10 @@ class ScreenOffTimeoutQSService : BaseQSService(){
         super.onTileAdded()
     }
 
+    override fun onTileRemoved() {
+        super.onTileRemoved()
+    }
+
     override fun onStartListening() {
         super.onStartListening()
 
