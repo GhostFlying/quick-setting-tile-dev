@@ -80,7 +80,7 @@ class ScreenOffTimeoutQSService : BaseQSService(){
                     R.string.screen_time_out_alert_confirm,
                     DialogInterface.OnClickListener { dialog, which ->
                         val intent = Intent(SystemSettingUtil.ACTION_GRANT_PERMISSION)
-                        startActivityAndCollapse(intent)
+                        startActivity(intent)
                     }
             )
 
